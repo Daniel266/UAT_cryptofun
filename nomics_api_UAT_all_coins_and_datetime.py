@@ -1,7 +1,7 @@
 
 
 '''
-HELPFULL LINKS:
+HELPFUL LINKS:
 https://pynative.com/python-sqlite/#h-python-sqlite-database-connection
 https://coralogix.com/blog/python-logging-best-practices-tips/
 
