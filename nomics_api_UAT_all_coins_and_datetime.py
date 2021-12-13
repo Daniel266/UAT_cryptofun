@@ -1,7 +1,7 @@
 
 
 '''
-HELPFUL LINKS:
+HELPFULL LINKS:
 https://pynative.com/python-sqlite/#h-python-sqlite-database-connection
 https://coralogix.com/blog/python-logging-best-practices-tips/
 
@@ -46,8 +46,10 @@ AGENDA:
 
 '''
 
-logging.basicConfig(filename=r'C:\Users\danau\Documents\Python\Projects\otherp\test-app\env\nomics_api_UAT_all_coins_and_datetime.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(filename=r'C:\Users\danau\Documents\Python\Projects\otherp\test-app\env\nomics_api_UAT_all_coins_and_datetime.log') #, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO)
+
+logging.basicConfig(level=logging.INFO, filename = r'C:\Users\danau\Documents\Python\Projects\otherp\test-app\env\nomics_api_UAT_all_coins_and_datetime.log')
 
 now = datetime.now()
 today = date.today()
@@ -55,22 +57,27 @@ today = date.today()
 current_time = now.strftime("%H:%M:%S")
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
-logging.info("Formatting dates {today} and times {now}, {current_time}, {dt_string}".format(today = today, now = now, current_time = current_time, dt_string = dt_string))
+logging.info("Formatting dates {today} and times {now}, {current_time}, {dt_string} \n".format(today = today, now = now, current_time = current_time, dt_string = dt_string))
 
 def info():
     
-    NOMICS_API_KEY= "e86ad175151309bad9942b95bb0d7a002d64cad8"
+    NOMICS_API_KEY= "xxxxxx"
 
     url_market = "https://api.nomics.com/v1/markets?key={}".format(NOMICS_API_KEY)
     url_prices = "https://api.nomics.com/v1/prices?key={}".format(NOMICS_API_KEY)
     url_ticker = "https://api.nomics.com/v1/currencies/ticker?key="+(NOMICS_API_KEY)+"&BTC,ETH,XRP,ADA,LTC,LRC,GALA,LINK,CRO,DOT,ATOM,AMP,ALGOA,MANA,FIL,OXT,DNT&interval=1d,30d&convert=USD&per-page=100&page=1"
     url_currency = "https://api.nomics.com/v1/currencies?key="+(NOMICS_API_KEY)+"&ids=BTC,ETH,XRP,ADA,LTC,LRC,GALA,LINK,CRO,DOT,ATOM,AMP,ALGOA,MANA,FIL,OXT,DNT&attributes=id,name,logo_url"
 
-    logging.info("Retrieving NOMICS_API_KEY: {NOMICS_API_KEY}")
-    logging.info("url_market = {url_market}")
-    logging.info("url_prices = {url_prices}")
-    logging.info("url_ticker = {url_ticker}")
-    logging.info("url_currency = {url_currency}")
+    logging.debug("Retrieving NOMICS_API_KEY: {NOMICS_API_KEY}")
+    # logging.info("Retrieving NOMICS_API_KEY: {NOMICS_API_KEY}".format(NOMICS_API_KEY))
+    # logging.info("url_market = {url_market}")
+    logging.info("url_market: {}".format(url_market))
+    # logging.info("url_prices = {url_prices}")
+    logging.info("url_prices: {}".format(url_prices))
+    # logging.info("url_ticker = {url_ticker}")
+    logging.info("url_ticker: {}".format(url_ticker))
+    # logging.info("url_currency = {url_currency}")
+    logging.info("url_currency: {}".format(url_currency))
 
     return url_market, url_currency, url_prices, url_ticker, NOMICS_API_KEY
 
@@ -158,7 +165,7 @@ def copy_sql():
     try:
         sqliteConnection = sqlite3.connect('nomics_test_uat_all_coins_datetime.db')
         cursor = sqliteConnection.cursor()
-        print("Database created and Successfully Connected to SQLite")
+        # print("Database created and Successfully Connected to SQLite")
 
         sql_insert = '''
                     INSERT INTO nomics_test_uat_all_coins_datetime_full_table
@@ -168,7 +175,7 @@ def copy_sql():
         # sqlite_select_Query = "select sqlite_version();"
         # cursor.execute(sqlite_select_Query)
         record = cursor.fetchall()
-        print("SQLite Database Version is: ", record)
+        # print("SQLite Database Version is: ", record)
         cursor.close()
         
     except sqlite3.Error as error:
@@ -176,7 +183,7 @@ def copy_sql():
     finally:
         if sqliteConnection:
             sqliteConnection.close()
-            print("The SQLite connection is closed")
+            # print("The SQLite connection is closed")
         # try:
         #     sqlite_table_insert = "nomics_test_uat_all_coins_datetime_full_table"
         # except
@@ -387,18 +394,11 @@ def to_txt():
         except error as e:
             # print(e)
             pass
-    
 
-## Calls in UAT:
-# tickers = get_tickers()
-# engine, sqlite_connection, sqlite_table, sql_data = to_sql()
-# df = from_sql()
-# to_postgres()
 
 ## Calls in prod:
 tickers = get_tickers()
 engine, sqlite_connection, sqlite_table, sql_data = to_sql()
-# copy_sql()
 df = from_sql()
 to_postgres()
 from_postgres()
